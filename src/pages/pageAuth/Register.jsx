@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import AXIOS_INSTANCE from '../../utils/services/AxiosInstance'
+
 
 // CONSTANT
 import URLS from '../../utils/constants/Api'
@@ -23,7 +24,7 @@ const Register = () => {
   const handleSubmit = async event => {
     event.preventDefault()
     try {
-      const response = await axios.post(URLS.POST_REGISTER, user)
+      const response = await AXIOS_INSTANCE.post(URLS.POST_REGISTER, user)
       console.log(response);
     } catch (error) {
       console.log(error.message);

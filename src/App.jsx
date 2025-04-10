@@ -22,7 +22,7 @@ function App() {
         <Route element={<PublicRouter />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-        </Route>{" "}
+        </Route>
         {/* FIN ROUTE PUBLIC */}
       </Route>
 

@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router'
 
 // URL CONSTANT
 import URLS from '../constants/Api'
@@ -13,6 +14,12 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(null);
   const [isLoading, setIsLoading] = useState(false)
 
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    isLoggedIn()
+  }, [])
+
   // Fonction pour gérer l'authentification de l'user
   const login = async (userDataForm) => {
     try {
@@ -25,7 +32,10 @@ export const AuthProvider = ({ children }) => {
         setAuth(data);
 
         // Stockez les données de l'user en localstorage
-        localStorage.setItem('auth', JSON.stringify(auth));
+        localStorage.setItem('auth', JSON.stringify(data));
+
+        // REDIRIGE L'USER VERS LA PAGE D'ACCUEIL
+        navigate(`/`);
 
         setIsLoading(false)
       }
@@ -35,9 +45,24 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const isLoggedIn = () => {
+    setIsLoading(true)
+    // Récupére les données de l'user depuis le localstorage
+    const currentUser = localStorage.getItem("auth");
+    const currentUserParsed = currentUser ? JSON.parse(currentUser) : null
+    setAuth(currentUserParsed)
+    setIsLoading(false)
+  }
+
   const logout = () => {
+    setIsLoading(true)
+
     setAuth(null) // Réinitialise l'état de l'user à null
     localStorage.removeItem('auth') // supprimer les informations de l'user dans le local storage
+
+    // REDIRIGE L'USER VERS LA PAGE D'ACCUEIL
+    navigate(`/`);
+    setIsLoading(false)
   }
 
   return (
